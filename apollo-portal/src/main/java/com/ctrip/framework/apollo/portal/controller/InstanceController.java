@@ -3,8 +3,8 @@ package com.ctrip.framework.apollo.portal.controller;
 import com.ctrip.framework.apollo.common.dto.InstanceDTO;
 import com.ctrip.framework.apollo.common.dto.PageDTO;
 import com.ctrip.framework.apollo.common.exception.BadRequestException;
-import com.ctrip.framework.apollo.portal.environment.Env;
 import com.ctrip.framework.apollo.portal.entity.vo.Number;
+import com.ctrip.framework.apollo.portal.environment.Env;
 import com.ctrip.framework.apollo.portal.service.InstanceService;
 import com.google.common.base.Splitter;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class InstanceController {
 
     private static final Splitter RELEASES_SPLITTER = Splitter.on(",").omitEmptyStrings()
-        .trimResults();
+            .trimResults();
 
     private final InstanceService instanceService;
 
@@ -63,7 +63,7 @@ public class InstanceController {
                                                 @RequestParam String releaseIds) {
 
         Set<Long> releaseIdSet = RELEASES_SPLITTER.splitToList(releaseIds).stream().map(Long::parseLong)
-            .collect(Collectors.toSet());
+                .collect(Collectors.toSet());
 
         if (CollectionUtils.isEmpty(releaseIdSet)) {
             throw new BadRequestException("release ids can not be empty");

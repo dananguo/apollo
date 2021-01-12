@@ -1,28 +1,35 @@
 ## 1. Apollo是什么？
+
 Apollo（阿波罗）是携程框架部门研发的配置管理平台，能够集中化管理应用不同环境、不同集群的配置，配置修改后能够实时推送到应用端，并且具备规范的权限、流程治理等特性。
 
 更多介绍，可以参考[Apollo配置中心介绍](zh/design/apollo-introduction)
 
 ## 2. Cluster是什么？
+
 一个应用下不同实例的分组，比如典型的可以按照数据中心分，把A机房的应用实例分为一个集群，把B机房的应用实例分为另一个集群。
 
 ## 3. Namespace是什么？
-一个应用下不同配置的分组。
-请参考[Apollo核心概念之“Namespace”](zh/design/apollo-core-concept-namespace)
+
+一个应用下不同配置的分组。 请参考[Apollo核心概念之“Namespace”](zh/design/apollo-core-concept-namespace)
 
 ## 4. 我想要接入Apollo，该如何操作？
+
 请参考[Apollo使用指南](zh/usage/apollo-user-guide)
 
 ## 5. 我的应用需要不同机房的配置不一样，Apollo是否能支持？
+
 Apollo是支持的。请参考[Apollo使用指南](zh/usage/apollo-user-guide)中的`三、集群独立配置说明`
 
 ## 6. 我有多个应用需要使用同一份配置，Apollo是否能支持？
+
 Apollo是支持的。请参考[Apollo使用指南](zh/usage/apollo-user-guide)中的`四、多个AppId使用同一份配置`
 
 ## 7. Apollo是否支持查看权限控制或者配置加密？
+
 从1.1.0版本开始，apollo-portal增加了查看权限的支持，可以支持配置某个环境只允许项目成员查看私有Namespace的配置。
 
 这里的项目成员是指：
+
 1. 项目的管理员
 2. 具备该私有Namespace在该环境下的修改或发布权限
 
@@ -33,9 +40,11 @@ Apollo是支持的。请参考[Apollo使用指南](zh/usage/apollo-user-guide)�
 配置加密可以参考[spring-boot-encrypt demo项目](https://github.com/ctripcorp/apollo-use-cases/tree/master/spring-boot-encrypt)
 
 ## 8. 如果有多个config server，打包时如何配置meta server地址？
+
 有多台meta server可以通过nginx反向代理，通过一个域名代理多个meta server实现ha。
 
 ## 9. Apollo相比于Spring Cloud Config有什么优势？
+
 Spring Cloud Config的精妙之处在于它的配置存储于Git，这就天然的把配置的修改、权限、版本等问题隔离在外。通过这个设计使得Spring Cloud Config整体很简单，不过也带来了一些不便之处。
 
 下面尝试做一个简单的小结：

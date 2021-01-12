@@ -1,5 +1,7 @@
 # &nbsp;
+
 # 名词解释
+
 * 普通应用
     * 普通应用指的是独立运行的程序，如
         * Web应用程序
@@ -10,7 +12,9 @@
         * .Net的dll文件
 
 # 一、普通应用接入指南
+
 ## 1.1 创建项目
+
 要使用Apollo，第一步需要创建项目。
 
 1. 打开apollo-portal主页
@@ -28,11 +32,12 @@
 
 4. 点击提交
 
-    创建成功后，会自动跳转到项目首页
+   创建成功后，会自动跳转到项目首页
 
 ![app-created](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/app-created.png)
 
 ## 1.2 项目权限分配
+
 ### 1.2.1 项目管理员权限
 
 项目管理员拥有以下权限：
@@ -51,6 +56,7 @@
     * ![app-permission-user-added](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/app-permission-user-added.png)
 
 ### 1.2.2 配置编辑、发布权限
+
 配置权限分为编辑和发布：
 
 * 编辑权限允许用户在Apollo界面上创建、修改、删除配置
@@ -71,6 +77,7 @@
     * ![namespace-publish-permission](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/namespace-publish-permission.png)
 
 ## 1.3 添加配置项
+
 编辑配置需要拥有这个Namespace的编辑权限，如果发现没有新增配置按钮，可以找项目管理员授权。
 
 ### 1.3.1 通过表格模式添加配置
@@ -85,30 +92,32 @@
     * ![item-created](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/item-created.png)
 
 ### 1.3.2 通过文本模式编辑
-Apollo除了支持表格模式，逐个添加、修改配置外，还提供文本模式批量添加、修改。
-这个对于从已有的properties文件迁移尤其有用。
+
+Apollo除了支持表格模式，逐个添加、修改配置外，还提供文本模式批量添加、修改。 这个对于从已有的properties文件迁移尤其有用。
 
 1. 切换到文本编辑模式
-![text-mode-config-overview](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/text-mode-config-overview.png)
+   ![text-mode-config-overview](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/text-mode-config-overview.png)
 
 2. 点击右侧的修改配置按钮
-![text-mode-config-entry](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/text-mode-config-entry.png)
+   ![text-mode-config-entry](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/text-mode-config-entry.png)
 
 3. 输入配置项，并点击提交修改
-![text-mode-config-submit](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/text-mode-config-submit.png)
+   ![text-mode-config-submit](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/text-mode-config-submit.png)
 
 ## 1.4 发布配置
+
 配置只有在发布后才会真的被应用使用到，所以在编辑完配置后，需要发布配置。
 
 发布配置需要拥有这个Namespace的发布权限，如果发现没有发布按钮，可以找项目管理员授权。
 
 1. 点击“发布按钮”
-![publish-entry](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/hermes-portal-publish-entry.png)
+   ![publish-entry](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/hermes-portal-publish-entry.png)
 
 2. 填写发布相关信息，点击发布
-![publish-detail](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/hermes-portal-publish-detail.png)
+   ![publish-detail](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/hermes-portal-publish-detail.png)
 
 ## 1.5 应用读取配置
+
 配置发布成功后，应用就可以通过Apollo客户端读取到配置了。
 
 Apollo目前提供Java客户端，具体信息请点击[Java客户端使用文档](zh/usage/java-sdk-user-guide)：
@@ -124,6 +133,7 @@ Apollo目前提供Java客户端，具体信息请点击[Java客户端使用文�
 Apollo中的回滚也是类似的机制，点击回滚后是将发布到客户端的配置回滚到上一个已发布版本，也就是说客户端读取到的配置会恢复到上一个版本，但页面上编辑状态的配置是不会回滚的，从而开发可以在修复配置后重新发布。
 
 # 二、公共组件接入指南
+
 ## 2.1 公共组件和普通应用的区别
 
 公共组件是指那些发布给其它应用使用的客户端代码，比如CAT客户端、Hermes Producer客户端等。
@@ -176,15 +186,16 @@ Apollo中的回滚也是类似的机制，点击回滚后是将发布到客户�
 #### 2.2.2.1 通过表格模式添加配置
 
 1. 点击新增配置
-![public-namespace-edit-item-entry](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/public-namespace-edit-item-entry.png)
+   ![public-namespace-edit-item-entry](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/public-namespace-edit-item-entry.png)
 
 2. 输入配置项
-![public-namespace-edit-item](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/public-namespace-edit-item.png)
+   ![public-namespace-edit-item](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/public-namespace-edit-item.png)
 
 3. 点击提交
-![public-namespace-item-created](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/public-namespace-item-created.png)
+   ![public-namespace-item-created](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/public-namespace-item-created.png)
 
 #### 2.2.2.2 通过文本模式编辑
+
 这部分和普通应用一致，具体步骤请参见[1.3.2 通过文本模式编辑](#_132-%E9%80%9A%E8%BF%87%E6%96%87%E6%9C%AC%E6%A8%A1%E5%BC%8F%E7%BC%96%E8%BE%91)。
 
 ### 2.2.3 发布配置
@@ -194,10 +205,10 @@ Apollo中的回滚也是类似的机制，点击回滚后是将发布到客户�
 发布配置需要拥有这个Namespace的发布权限，如果发现没有发布按钮，可以找项目管理员授权。
 
 1. 点击“发布按钮”
-![public-namespace-publish-items-entry](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/public-namespace-publish-items-entry.png)
+   ![public-namespace-publish-items-entry](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/public-namespace-publish-items-entry.png)
 
 2. 填写发布相关信息，点击发布
-![public-namespace-publish-items](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/public-namespace-publish-items.png)
+   ![public-namespace-publish-items](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/public-namespace-publish-items.png)
 
 ### 2.2.4 应用读取配置
 
@@ -210,6 +221,7 @@ Apollo目前提供Java客户端，具体信息请点击[Java客户端使用文�
 对于公共组件的配置读取，可以参考上述文档中的“获取公共Namespace的配置”部分。
 
 ## 2.3 应用覆盖公用组件配置步骤
+
 前面提到，通常情况下，公共组件所用到的配置由原始开发团队维护，不过由于实际应用的运行时、环境各不一样，所以我们也允许应用在实际使用时能够覆盖公共组件的部分配置。
 
 这里就讲一下应用如何覆盖公用组件的配置，简单起见，假设apollo-portal应用使用了hermes producer客户端，并且希望调整hermes的批量发送大小。
@@ -222,26 +234,26 @@ Apollo目前提供Java客户端，具体信息请点击[Java客户端使用文�
     * ![link-public-namespace-entry](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/link-public-namespace-entry.png)
 
 2. 找到hermes producer的namespace，并选择需要关联到哪些环境和集群
-![link-public-namespace](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/link-public-namespace.png)
+   ![link-public-namespace](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/link-public-namespace.png)
 
 3. 关联成功后，页面会自动跳转到Namespace权限管理页面
     1. 分配修改权限
-![namespace-permission-edit](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/namespace-permission-edit.png)
+       ![namespace-permission-edit](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/namespace-permission-edit.png)
     2. 分配发布权限
-![namespace-publish-permission](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/namespace-publish-permission.png)
+       ![namespace-publish-permission](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/namespace-publish-permission.png)
 
 4. 点击“返回”回到项目页面
 
 ### 2.3.2 覆盖公用组件配置
 
 1. 点击新增配置
-![override-public-namespace-entry](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/override-public-namespace-entry.png)
+   ![override-public-namespace-entry](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/override-public-namespace-entry.png)
 
 2. 输入要覆盖的配置项
-![override-public-namespace-item](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/override-public-namespace-item.png)
+   ![override-public-namespace-item](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/override-public-namespace-item.png)
 
 3. 点击提交
-![override-public-namespace-item-done](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/override-public-namespace-item-done.png)
+   ![override-public-namespace-item-done](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/override-public-namespace-item-done.png)
 
 ### 2.3.3 发布配置
 
@@ -250,10 +262,10 @@ Apollo目前提供Java客户端，具体信息请点击[Java客户端使用文�
 发布配置需要拥有这个Namespace的发布权限，如果发现没有发布按钮，可以找项目管理员授权。
 
 1. 点击“发布按钮”
-![override-public-namespace-item-publish-entry](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/override-public-namespace-item-publish-entry.png)
+   ![override-public-namespace-item-publish-entry](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/override-public-namespace-item-publish-entry.png)
 
 2. 填写发布相关信息，点击发布
-![override-public-namespace-item-publish](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/override-public-namespace-item-publish.png)
+   ![override-public-namespace-item-publish](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/override-public-namespace-item-publish.png)
 
 3. 配置发布成功后，hermes producer客户端在apollo-portal应用里面运行时读取到的sender.batchSize的值就是1000。
 
@@ -293,6 +305,7 @@ Apollo目前提供Java客户端，具体信息请点击[Java客户端使用文�
 具体步骤可以参考[公共组件接入指南](#%e4%ba%8c%e3%80%81%e5%85%ac%e5%85%b1%e7%bb%84%e4%bb%b6%e6%8e%a5%e5%85%a5%e6%8c%87%e5%8d%97)。
 
 # 五、灰度发布使用指南
+
 通过灰度发布功能，可以实现：
 
 1. 对于一些对程序有比较大影响的配置，可以先在一个或者多个实例生效，观察一段时间没问题后再全量发布配置。
@@ -301,6 +314,7 @@ Apollo目前提供Java客户端，具体信息请点击[Java客户端使用文�
 下面将结合一个实际例子来描述如何使用灰度发布功能。
 
 ## 5.1 场景介绍
+
 100004458(apollo-demo)项目有两个客户端：
 
 1. 10.32.21.19
@@ -315,6 +329,7 @@ Apollo目前提供Java客户端，具体信息请点击[Java客户端使用文�
 ![initial-config](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/gray-release/initial-config.png)
 
 ## 5.2 创建灰度
+
 首先点击application namespace右上角的`创建灰度`按钮。
 
 ![create-gray-release](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/gray-release/create-gray-release.png)
@@ -324,6 +339,7 @@ Apollo目前提供Java客户端，具体信息请点击[Java客户端使用文�
 ![initial-gray-release-tab](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/gray-release/initial-gray-release-tab.png)
 
 ## 5.3 灰度配置
+
 点击`主版本的配置`中，timeout配置最右侧的`对此配置灰度`按钮
 
 ![initial-gray-release-tab](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/gray-release/edit-gray-release-config.png)
@@ -335,6 +351,7 @@ Apollo目前提供Java客户端，具体信息请点击[Java客户端使用文�
 ![gray-release-config-submitted](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/gray-release/gray-release-config-submitted.png)
 
 ## 5.4 配置灰度规则
+
 切换到`灰度规则`Tab，点击`新增规则`按钮
 
 ![new-gray-release-rule](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/gray-release/new-gray-release-rule.png)
@@ -353,9 +370,10 @@ Apollo目前提供Java客户端，具体信息请点击[Java客户端使用文�
 
 ![manual-input-gray-release-ip-2](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/gray-release/manual-input-gray-release-ip-2.png)
 
->注：对于公共Namespace的灰度规则，需要先指定要灰度的appId，然后再选择IP。
+> 注：对于公共Namespace的灰度规则，需要先指定要灰度的appId，然后再选择IP。
 
 ## 5.5 灰度发布
+
 配置规则已经生效，不过灰度配置还没有发布。切换到`配置`Tab。
 
 再次检查灰度的配置部分，如果没有问题，点击`灰度发布`。
@@ -377,6 +395,7 @@ Apollo目前提供Java客户端，具体信息请点击[Java客户端使用文�
 后面可以继续配置的修改或规则的更改。配置的修改需要点击灰度发布后才会生效，规则的修改在规则点击完成后就会实时生效。
 
 ## 5.6 全量发布
+
 如果灰度的配置测试下来比较理想，符合预期，那么就可以操作`全量发布`。
 
 全量发布的效果是：
@@ -396,11 +415,13 @@ Apollo目前提供Java客户端，具体信息请点击[Java客户端使用文�
 ![master-branch-instance-list-after-full-release](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/gray-release/master-branch-instance-list-after-full-release.png)
 
 ## 5.7 放弃灰度
+
 如果灰度版本不理想或者不需要了，可以点击`放弃灰度`。
 
 ![abandon-gray-release](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/gray-release/abandon-gray-release.png)
 
 ## 5.8 发布历史
+
 点击主版本的`发布历史`按钮，可以看到当前namespace的主版本以及灰度版本的发布历史。
 
 ![view-release-history](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/gray-release/view-release-history.png)
@@ -414,6 +435,7 @@ Apollo目前提供Java客户端，具体信息请点击[Java客户端使用文�
 从1.1.0版本开始，apollo-portal增加了查看权限的支持，可以支持配置某个环境只允许项目成员查看私有Namespace的配置。
 
 这里的项目成员是指：
+
 1. 项目的管理员
 2. 具备该私有Namespace在该环境下的修改或发布权限
 
@@ -426,10 +448,10 @@ Apollo目前提供Java客户端，具体信息请点击[Java客户端使用文�
 Apollo从1.6.0版本开始增加访问密钥机制，从而只有经过身份验证的客户端才能访问敏感配置。如果应用开启了访问密钥，客户端需要配置密钥，否则无法获取配置。
 
 1. 项目管理员打开管理密钥页面
-![管理密钥入口](https://user-images.githubusercontent.com/837658/94990081-f4d3cd80-05ab-11eb-9470-fed5ec6de92e.png)
+   ![管理密钥入口](https://user-images.githubusercontent.com/837658/94990081-f4d3cd80-05ab-11eb-9470-fed5ec6de92e.png)
 
 2. 为项目的每个环境生成访问密钥，注意默认是禁用的，建议在客户端都配置完成后再开启
-![密钥配置页面](https://user-images.githubusercontent.com/837658/94990150-788dba00-05ac-11eb-9a12-727fdb872e42.png)
+   ![密钥配置页面](https://user-images.githubusercontent.com/837658/94990150-788dba00-05ac-11eb-9a12-727fdb872e42.png)
 
 3. 客户端侧[配置访问密钥](zh/usage/java-sdk-user-guide#_1244-配置访问密钥)
 
@@ -448,11 +470,14 @@ Apollo从1.6.0版本开始增加访问密钥机制，从而只有经过身份验
 ### 7.1.2 授权
 
 Apollo 支持细粒度的权限控制，请务必根据实际情况做好权限控制：
+
 1. [项目管理员权限](#_121-项目管理员权限)
-    * Apollo 默认允许所有登录用户创建项目，如果只允许部分用户创建项目，可以开启[创建项目权限控制](zh/deployment/distributed-deployment-guide?id=_10-rolecreate-applicationenabled-是否开启创建项目权限控制)
+    * Apollo
+      默认允许所有登录用户创建项目，如果只允许部分用户创建项目，可以开启[创建项目权限控制](zh/deployment/distributed-deployment-guide?id=_10-rolecreate-applicationenabled-是否开启创建项目权限控制)
 2. [配置编辑、发布权限](#_122-配置编辑、发布权限)
     * 配置编辑、发布权限支持按环境配置，比如开发环境开发人员可以自行完成配置编辑和发布的过程，但是生产环境发布权限交由测试或运维人员
-    * 生产环境建议同时开启[发布审核](zh/deployment/distributed-deployment-guide?id=_2-namespacelockswitch-一次发布只能有一个人修改开关，用于发布审核)，从而控制一次配置发布只能由一个人修改，另一个人发布，确保配置修改得到充分检查
+    * 生产环境建议同时开启[发布审核](zh/deployment/distributed-deployment-guide?id=_2-namespacelockswitch-一次发布只能有一个人修改开关，用于发布审核)
+      ，从而控制一次配置发布只能由一个人修改，另一个人发布，确保配置修改得到充分检查
 3. [配置查看权限](#_61-配置查看权限)
     * 可以指定某个环境只允许项目成员查看私有Namespace的配置，从而避免敏感配置泄露，如生产环境
 
@@ -460,6 +485,9 @@ Apollo 支持细粒度的权限控制，请务必根据实际情况做好权限�
 
 除了用户权限，在系统访问上也需要加以考虑：
 
-1. `apollo-configservice`和`apollo-adminservice`是基于内网可信网络设计的，所以出于安全考虑，禁止`apollo-configservice`和`apollo-adminservice`直接暴露在公网
+1. `apollo-configservice`和`apollo-adminservice`是基于内网可信网络设计的，所以出于安全考虑，禁止`apollo-configservice`和`apollo-adminservice`
+   直接暴露在公网
 2. 对敏感配置可以考虑开启[访问秘钥](#_62-%e9%85%8d%e7%bd%ae%e8%ae%bf%e9%97%ae%e5%af%86%e9%92%a5)，从而只有经过身份验证的客户端才能访问敏感配置
-3. 1.7.1及以上版本可以考虑为`apollo-adminservice`开启[访问控制](zh/deployment/distributed-deployment-guide?id=_6-admin-serviceaccesscontrolenabled-配置apollo-adminservice是否开启访问控制)，从而只有合法的`apollo-portal`才能访问对应接口，增强安全性
+3. 1.7.1及以上版本可以考虑为`apollo-adminservice`
+   开启[访问控制](zh/deployment/distributed-deployment-guide?id=_6-admin-serviceaccesscontrolenabled-配置apollo-adminservice是否开启访问控制)
+   ，从而只有合法的`apollo-portal`才能访问对应接口，增强安全性

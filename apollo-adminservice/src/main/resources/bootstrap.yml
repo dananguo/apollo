@@ -12,8 +12,9 @@ eureka:
     healthcheck:
       enabled: true
     eurekaServiceUrlPollIntervalSeconds: 60
-
+  server:
+    peer-node-read-timeout-ms: 10000
 management:
   health:
     status:
-      order: DOWN, OUT_OF_SERVICE, UNKNOWN, UP 
+      order: DOWN, OUT_OF_SERVICE, UNKNOWN, UP

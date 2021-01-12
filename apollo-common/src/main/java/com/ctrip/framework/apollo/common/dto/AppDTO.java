@@ -1,82 +1,83 @@
 package com.ctrip.framework.apollo.common.dto;
 
 import com.ctrip.framework.apollo.common.utils.InputValidator;
+
 import javax.validation.constraints.Pattern;
 
-public class AppDTO extends BaseDTO{
+public class AppDTO extends BaseDTO {
 
-  private long id;
+    private long id;
 
-  private String name;
+    private String name;
 
-  @Pattern(
-      regexp = InputValidator.CLUSTER_NAMESPACE_VALIDATOR,
-      message = "Invalid AppId format: " + InputValidator.INVALID_CLUSTER_NAMESPACE_MESSAGE
-  )
-  private String appId;
+    @Pattern(
+            regexp = InputValidator.CLUSTER_NAMESPACE_VALIDATOR,
+            message = "Invalid AppId format: " + InputValidator.INVALID_CLUSTER_NAMESPACE_MESSAGE
+    )
+    private String appId;
 
-  private String orgId;
+    private String orgId;
 
-  private String orgName;
+    private String orgName;
 
-  private String ownerName;
+    private String ownerName;
 
-  private String ownerEmail;
+    private String ownerEmail;
 
-  public long getId() {
-    return id;
-  }
+    public long getId() {
+        return id;
+    }
 
-  public void setId(long id) {
-    this.id = id;
-  }
+    public void setId(long id) {
+        this.id = id;
+    }
 
-  public String getAppId() {
-    return appId;
-  }
+    public String getAppId() {
+        return appId;
+    }
 
-  public String getName() {
-    return name;
-  }
+    public void setAppId(String appId) {
+        this.appId = appId;
+    }
 
-  public String getOrgId() {
-    return orgId;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public String getOrgName() {
-    return orgName;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public String getOwnerEmail() {
-    return ownerEmail;
-  }
+    public String getOrgId() {
+        return orgId;
+    }
 
-  public String getOwnerName() {
-    return ownerName;
-  }
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
+    }
 
-  public void setAppId(String appId) {
-    this.appId = appId;
-  }
+    public String getOrgName() {
+        return orgName;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
+    }
 
-  public void setOrgId(String orgId) {
-    this.orgId = orgId;
-  }
+    public String getOwnerEmail() {
+        return ownerEmail;
+    }
 
-  public void setOrgName(String orgName) {
-    this.orgName = orgName;
-  }
+    public void setOwnerEmail(String ownerEmail) {
+        this.ownerEmail = ownerEmail;
+    }
 
-  public void setOwnerEmail(String ownerEmail) {
-    this.ownerEmail = ownerEmail;
-  }
+    public String getOwnerName() {
+        return ownerName;
+    }
 
-  public void setOwnerName(String ownerName) {
-    this.ownerName = ownerName;
-  }
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
 
 }

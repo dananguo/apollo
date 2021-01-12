@@ -1,11 +1,13 @@
 ### 1. windows怎么执行build.sh?
+
 安装[Git Bash](https://git-for-windows.github.io/)，然后运行 “./build.sh” 注意前面 “./”
 
-### 2. 本地运行时Portal一直报Env is down. 
+### 2. 本地运行时Portal一直报Env is down.
 
 默认config service启动在8080端口，admin service启动在8090端口。请确认这两个端口是否被其它应用程序占用。
 
-如果还伴有异常信息：org.springframework.web.client.HttpClientErrorException: 405 Method Not Allowed，一般是由于本地启动了`ShadowSocks`，因为`ShadowSocks`默认会占用8090端口。
+如果还伴有异常信息：org.springframework.web.client.HttpClientErrorException: 405 Method Not Allowed，一般是由于本地启动了`ShadowSocks`
+，因为`ShadowSocks`默认会占用8090端口。
 
 1.1.0版本增加了**系统信息**页面，可以通过`管理员工具` -> `系统信息`查看当前各个环境的Meta Server以及admin service信息，有助于排查问题。
 
@@ -15,9 +17,11 @@
 
 Apollo客户端和Portal会从Meta Server获取服务的地址（IP+端口），然后通过服务地址直接访问。
 
-所以如果实际部署的机器有多块网卡（如docker），或者存在某些网卡的IP是Apollo客户端和Portal无法访问的（如网络安全限制），那么我们就需要在`apollo-configservice`和`apollo-adminservice`中做相关限制以避免Eureka将这些网卡的IP注册到Meta Server。
+所以如果实际部署的机器有多块网卡（如docker），或者存在某些网卡的IP是Apollo客户端和Portal无法访问的（如网络安全限制），那么我们就需要在`apollo-configservice`
+和`apollo-adminservice`中做相关限制以避免Eureka将这些网卡的IP注册到Meta Server。
 
 #### 方案一： 忽略某些网卡
+
 具体文档可以参考[Ignore Network Interfaces](http://projects.spring.io/spring-cloud/spring-cloud.html#ignore-network-interfaces)章节。具体而言，就是分别编辑[apollo-configservice/src/main/resources/application.yml](https://github.com/ctripcorp/apollo/blob/master/apollo-configservice/src/main/resources/application.yml)和[apollo-adminservice/src/main/resources/application.yml](https://github.com/ctripcorp/apollo/blob/master/apollo-adminservice/src/main/resources/application.yml)，然后把需要忽略的网卡加进去。
 
 如下面这个例子就是对于`apollo-configservice`，把docker0和veth.*的网卡在注册到Eureka时忽略掉。
@@ -25,7 +29,7 @@ Apollo客户端和Portal会从Meta Server获取服务的地址（IP+端口），
 ```yaml
     spring:
       application:
-          name: apollo-configservice
+        name: apollo-configservice
       profiles:
         active: ${apollo_profile}
       cloud:
@@ -34,20 +38,24 @@ Apollo客户端和Portal会从Meta Server获取服务的地址（IP+端口），
             - docker0
             - veth.*
 ```
+
 > 注意，对于application.yml修改时要小心，千万不要把其它信息改错了，如spring.application.name等。
 
 #### 方案二：强制指定admin server和config server向eureka注册的IP
 
-可以修改startup.sh，通过JVM System Property在运行时传入，如`-Deureka.instance.ip-address=${指定的IP}`，或者也可以修改apollo-adminservice或apollo-configservice 的bootstrap.yml文件，加入以下配置
+可以修改startup.sh，通过JVM System Property在运行时传入，如`-Deureka.instance.ip-address=${指定的IP}`
+，或者也可以修改apollo-adminservice或apollo-configservice 的bootstrap.yml文件，加入以下配置
 
 ``` yaml
 eureka:
   instance:
     ip-address: ${指定的IP}
 ```
+
 #### 方案三：强制指定admin server和config server向eureka注册的IP和Port
 
-可以修改startup.sh，通过JVM System Property在运行时传入，如`-Deureka.instance.homePageUrl=http://${指定的IP}:${指定的Port}`，或者也可以修改apollo-adminservice或apollo-configservice 的bootstrap.yml文件，加入以下配置
+可以修改startup.sh，通过JVM System Property在运行时传入，如`-Deureka.instance.homePageUrl=http://${指定的IP}:${指定的Port}`
+，或者也可以修改apollo-adminservice或apollo-configservice 的bootstrap.yml文件，加入以下配置
 
 ``` yaml
 eureka:
@@ -60,7 +68,6 @@ eureka:
 
 > 注：如果Apollo部署在公有云上，本地开发环境无法连接，但又需要做开发测试的话，客户端可以升级到0.11.0版本及以上，然后通过`-Dapollo.configService=http://config-service的公网IP:端口`来跳过meta service的服务发现，记得要对公网 SLB 设置 IP 白名单，避免数据泄露
 
-
 ### 4. Portal如何增加环境？
 
 #### 4.1 1.6.0及以上的版本
@@ -68,20 +75,28 @@ eureka:
 1.6.0版本增加了自定义环境的功能，可以在不修改代码的情况增加环境
 
 1. protaldb增加环境，参考[分布式部署指南 2.1.3.1一节](zh/deployment/distributed-deployment-guide?id=_2131-调整apolloportaldb配置)
-2. 为apollo-portal添加新增环境对应的meta server地址，具体参考：[2.2.1.1.2.4 配置apollo-portal的meta service信息](zh/deployment/distributed-deployment-guide?id=_221124-配置apollo-portal的meta-service信息)。apollo-client在新的环境下使用时也需要做好相应的配置，具体参考：[1.2.2 Apollo Meta Server](zh/usage/java-sdk-user-guide?id=_122-apollo-meta-server)。
+2. 为apollo-portal添加新增环境对应的meta
+   server地址，具体参考：[2.2.1.1.2.4 配置apollo-portal的meta service信息](zh/deployment/distributed-deployment-guide?id=_221124-配置apollo-portal的meta-service信息)
+   。apollo-client在新的环境下使用时也需要做好相应的配置，具体参考：[1.2.2 Apollo Meta Server](zh/usage/java-sdk-user-guide?id=_122-apollo-meta-server)
+   。
 
->注1：一套Portal可以管理多个环境，但是每个环境都需要独立部署一套Config Service、Admin Service和ApolloConfigDB，具体请参考：[2.1.2 创建ApolloConfigDB](zh/deployment/distributed-deployment-guide?id=_212-创建apolloconfigdb)，[2.1.3.2 调整ApolloConfigDB配置](zh/deployment/distributed-deployment-guide?id=_2132-调整apolloconfigdb配置)，[2.2.1.1.2 配置数据库连接信息](zh/deployment/distributed-deployment-guide?id=_22112-配置数据库连接信息)
+> 注1：一套Portal可以管理多个环境，但是每个环境都需要独立部署一套Config Service、Admin Service和ApolloConfigDB，具体请参考：[2.1.2 创建ApolloConfigDB](zh/deployment/distributed-deployment-guide?id=_212-创建apolloconfigdb)，[2.1.3.2 调整ApolloConfigDB配置](zh/deployment/distributed-deployment-guide?id=_2132-调整apolloconfigdb配置)，[2.2.1.1.2 配置数据库连接信息](zh/deployment/distributed-deployment-guide?id=_22112-配置数据库连接信息)
 
 > 注2：如果是为已经运行了一段时间的Apollo配置中心增加环境，别忘了参考[2.1.2.4 从别的环境导入ApolloConfigDB的项目数据](zh/deployment/distributed-deployment-guide?id=_2124-从别的环境导入apolloconfigdb的项目数据)对新的环境做初始化
 
 #### 4.2 1.5.1及之前的版本
+
 ##### 4.2.1 添加Apollo预先定义好的环境
 
 如果需要添加的环境是Apollo预先定义的环境（DEV, FAT, UAT, PRO），需要两步操作：
-1. protaldb增加环境，参考[分布式部署指南 2.1.3.1一节](zh/deployment/distributed-deployment-guide?id=_2131-调整apolloportaldb配置)
-2. 为apollo-portal添加新增环境对应的meta server地址，具体参考：[2.2.1.1.2.4 配置apollo-portal的meta service信息](zh/deployment/distributed-deployment-guide?id=_221124-配置apollo-portal的meta-service信息)。apollo-client在新的环境下使用时也需要做好相应的配置，具体参考：[1.2.2 Apollo Meta Server](zh/usage/java-sdk-user-guide?id=_122-apollo-meta-server)。
 
->注1：一套Portal可以管理多个环境，但是每个环境都需要独立部署一套Config Service、Admin Service和ApolloConfigDB，具体请参考：[2.1.2 创建ApolloConfigDB](zh/deployment/distributed-deployment-guide?id=_212-创建apolloconfigdb)，[2.1.3.2 调整ApolloConfigDB配置](zh/deployment/distributed-deployment-guide?id=_2132-调整apolloconfigdb配置)，[2.2.1.1.2 配置数据库连接信息](zh/deployment/distributed-deployment-guide?id=_22112-配置数据库连接信息)
+1. protaldb增加环境，参考[分布式部署指南 2.1.3.1一节](zh/deployment/distributed-deployment-guide?id=_2131-调整apolloportaldb配置)
+2. 为apollo-portal添加新增环境对应的meta
+   server地址，具体参考：[2.2.1.1.2.4 配置apollo-portal的meta service信息](zh/deployment/distributed-deployment-guide?id=_221124-配置apollo-portal的meta-service信息)
+   。apollo-client在新的环境下使用时也需要做好相应的配置，具体参考：[1.2.2 Apollo Meta Server](zh/usage/java-sdk-user-guide?id=_122-apollo-meta-server)
+   。
+
+> 注1：一套Portal可以管理多个环境，但是每个环境都需要独立部署一套Config Service、Admin Service和ApolloConfigDB，具体请参考：[2.1.2 创建ApolloConfigDB](zh/deployment/distributed-deployment-guide?id=_212-创建apolloconfigdb)，[2.1.3.2 调整ApolloConfigDB配置](zh/deployment/distributed-deployment-guide?id=_2132-调整apolloconfigdb配置)，[2.2.1.1.2 配置数据库连接信息](zh/deployment/distributed-deployment-guide?id=_22112-配置数据库连接信息)
 
 > 注2：如果是为已经运行了一段时间的Apollo配置中心增加环境，别忘了参考[2.1.2.4 从别的环境导入ApolloConfigDB的项目数据](zh/deployment/distributed-deployment-guide?id=_2124-从别的环境导入apolloconfigdb的项目数据)对新的环境做初始化
 
@@ -90,33 +105,44 @@ eureka:
 如果需要添加的环境不是Apollo预先定义的环境，请参照如下步骤操作：
 
 1. 假设需要添加的环境名称叫beta
-2. 修改[com.ctrip.framework.apollo.core.enums.Env](https://github.com/ctripcorp/apollo/blob/master/apollo-core/src/main/java/com/ctrip/framework/apollo/core/enums/Env.java)类，在其中加入`BETA`枚举：
+2.
+
+修改[com.ctrip.framework.apollo.core.enums.Env](https://github.com/ctripcorp/apollo/blob/master/apollo-core/src/main/java/com/ctrip/framework/apollo/core/enums/Env.java)类，在其中加入`BETA`枚举：
+
 ```java
-public enum Env{
-  LOCAL, DEV, BETA, FWS, FAT, UAT, LPT, PRO, TOOLS, UNKNOWN;
+public enum Env {
+    LOCAL, DEV, BETA, FWS, FAT, UAT, LPT, PRO, TOOLS, UNKNOWN;
   ...
 }
 ```
-3. 修改[com.ctrip.framework.apollo.core.enums.EnvUtils](https://github.com/ctripcorp/apollo/blob/master/apollo-core/src/main/java/com/ctrip/framework/apollo/core/enums/EnvUtils.java)类，在其中加入`BETA`枚举的转换逻辑：
+
+3.
+
+修改[com.ctrip.framework.apollo.core.enums.EnvUtils](https://github.com/ctripcorp/apollo/blob/master/apollo-core/src/main/java/com/ctrip/framework/apollo/core/enums/EnvUtils.java)类，在其中加入`BETA`枚举的转换逻辑：
+
 ```java
 public final class EnvUtils {
-  
-  public static Env transformEnv(String envName) {
-    if (StringUtils.isBlank(envName)) {
-      return Env.UNKNOWN;
-    }
-    switch (envName.trim().toUpperCase()) {
+
+    public static Env transformEnv(String envName) {
+        if (StringUtils.isBlank(envName)) {
+            return Env.UNKNOWN;
+        }
+        switch (envName.trim().toUpperCase()) {
       ...
-      case "BETA":
-        return Env.BETA;
+            case "BETA":
+                return Env.BETA;
       ...
-      default:
-        return Env.UNKNOWN;
+            default:
+                return Env.UNKNOWN;
+        }
     }
-  }
 }
 ```
-4. 修改[apollo-env.properties](https://github.com/ctripcorp/apollo/blob/master/apollo-portal/src/main/resources/apollo-env.properties)，增加`beta.meta`占位符：
+
+4.
+
+修改[apollo-env.properties](https://github.com/ctripcorp/apollo/blob/master/apollo-portal/src/main/resources/apollo-env.properties)，增加`beta.meta`占位符：
+
 ```properties
 local.meta=http://localhost:8080
 dev.meta=${dev_meta}
@@ -126,18 +152,29 @@ uat.meta=${uat_meta}
 lpt.meta=${lpt_meta}
 pro.meta=${pro_meta}
 ```
-5. 修改[com.ctrip.framework.apollo.core.internals.LegacyMetaServerProvider](https://github.com/ctripcorp/apollo/blob/master/apollo-core/src/main/java/com/ctrip/framework/apollo/core/internals/LegacyMetaServerProvider.java)类，增加读取`BETA`环境的meta server地址逻辑：
+
+5.
+
+修改[com.ctrip.framework.apollo.core.internals.LegacyMetaServerProvider](https://github.com/ctripcorp/apollo/blob/master/apollo-core/src/main/java/com/ctrip/framework/apollo/core/internals/LegacyMetaServerProvider.java)类，增加读取`BETA`环境的meta
+server地址逻辑：
+
 ```java
 public class LegacyMetaServerProvider {
     ...
-    domains.put(Env.BETA, getMetaServerAddress(prop, "beta_meta", "beta.meta"));
+            domains.put(Env.BETA,
+
+    getMetaServerAddress(prop, "beta_meta","beta.meta"));
     ...
 }
 ```
-6. protaldb增加`BETA`环境，参考[分布式部署指南 2.1.3.1一节](zh/deployment/distributed-deployment-guide?id=_2131-调整apolloportaldb配置)
-7. 为apollo-portal添加新增环境对应的meta server地址，具体参考：[2.2.1.1.2.4 配置apollo-portal的meta service信息](zh/deployment/distributed-deployment-guide?id=_221124-配置apollo-portal的meta-service信息)。apollo-client在新的环境下使用时也需要做好相应的配置，具体参考：[1.2.2 Apollo Meta Server](zh/usage/java-sdk-user-guide?id=_122-apollo-meta-server)。
 
->注1：一套Portal可以管理多个环境，但是每个环境都需要独立部署一套Config Service、Admin Service和ApolloConfigDB，具体请参考：[2.1.2 创建ApolloConfigDB](zh/deployment/distributed-deployment-guide?id=_212-创建apolloconfigdb)，[2.1.3.2 调整ApolloConfigDB配置](zh/deployment/distributed-deployment-guide?id=_2132-调整apolloconfigdb配置)，[2.2.1.1.2 配置数据库连接信息](zh/deployment/distributed-deployment-guide?id=_22112-配置数据库连接信息)
+6. protaldb增加`BETA`环境，参考[分布式部署指南 2.1.3.1一节](zh/deployment/distributed-deployment-guide?id=_2131-调整apolloportaldb配置)
+7. 为apollo-portal添加新增环境对应的meta
+   server地址，具体参考：[2.2.1.1.2.4 配置apollo-portal的meta service信息](zh/deployment/distributed-deployment-guide?id=_221124-配置apollo-portal的meta-service信息)
+   。apollo-client在新的环境下使用时也需要做好相应的配置，具体参考：[1.2.2 Apollo Meta Server](zh/usage/java-sdk-user-guide?id=_122-apollo-meta-server)
+   。
+
+> 注1：一套Portal可以管理多个环境，但是每个环境都需要独立部署一套Config Service、Admin Service和ApolloConfigDB，具体请参考：[2.1.2 创建ApolloConfigDB](zh/deployment/distributed-deployment-guide?id=_212-创建apolloconfigdb)，[2.1.3.2 调整ApolloConfigDB配置](zh/deployment/distributed-deployment-guide?id=_2132-调整apolloconfigdb配置)，[2.2.1.1.2 配置数据库连接信息](zh/deployment/distributed-deployment-guide?id=_22112-配置数据库连接信息)
 
 > 注2：如果是为已经运行了一段时间的Apollo配置中心增加环境，别忘了参考[2.1.2.4 从别的环境导入ApolloConfigDB的项目数据](zh/deployment/distributed-deployment-guide?id=_2124-从别的环境导入apolloconfigdb的项目数据)对新的环境做初始化
 
@@ -158,14 +195,14 @@ public class LegacyMetaServerProvider {
 获取客户端网卡逻辑在1.4.0版本有所调整，所以需要根据客户端版本区分
 
 #### 6.1 apollo-client为1.3.0及之前的版本
+
 如果有多网卡，且都是普通网卡的话，需要在/etc/hosts里面加一条映射关系来提升权重。
 
 格式：`ip ${hostname}`
 
 这里的${hostname}就是你在机器上执行hostname的结果。
 
-比如正确IP为：192.168.1.50，hostname执行结果为：jim-ubuntu-pc
-那么最终在hosts文件映射的记录为：
+比如正确IP为：192.168.1.50，hostname执行结果为：jim-ubuntu-pc 那么最终在hosts文件映射的记录为：
 
 ```
 192.168.1.50 jim-ubuntu-pc
@@ -196,6 +233,7 @@ Apollo默认自带了Eureka作为内部的注册中心实现，一般情况下�
 修改[com.ctrip.framework.apollo.configservice.ConfigServiceApplication](https://github.com/ctripcorp/apollo/blob/master/apollo-configservice/src/main/java/com/ctrip/framework/apollo/configservice/ConfigServiceApplication.java)，把`@EnableEurekaServer`改为`@EnableEurekaClient`
 
 ```java
+
 @EnableEurekaClient
 @EnableAspectJAutoProxy
 @EnableAutoConfiguration // (exclude = EurekaClientConfigBean.class)
@@ -203,9 +241,9 @@ Apollo默认自带了Eureka作为内部的注册中心实现，一般情况下�
 @EnableTransactionManagement
 @PropertySource(value = {"classpath:configservice.properties"})
 @ComponentScan(basePackageClasses = {ApolloCommonConfig.class,
-    ApolloBizConfig.class,
-    ConfigServiceApplication.class,
-    ApolloMetaServiceConfig.class})
+        ApolloBizConfig.class,
+        ConfigServiceApplication.class,
+        ApolloMetaServiceConfig.class})
 public class ConfigServiceApplication {
   ...
 }
@@ -225,11 +263,13 @@ http://1.1.1.1:8761/eureka/,http://2.2.2.2:8761/eureka/
 
 ### 9. Spring Boot中使用`ConditionalOnProperty`读取不到配置
 
-`@ConditionalOnProperty`功能从0.10.0版本开始支持，具体可以参考 [Spring Boot集成方式](zh/usage/java-sdk-user-guide?id=_3213-spring-boot集成方式（推荐）)
+`@ConditionalOnProperty`
+功能从0.10.0版本开始支持，具体可以参考 [Spring Boot集成方式](zh/usage/java-sdk-user-guide?id=_3213-spring-boot集成方式（推荐）)
 
 ### 10. 多机房如何实现A机房的客户端就近读取A机房的config service，B机房的客户端就近读取B机房的config service？
 
-请参考[Issue 1294](https://github.com/ctripcorp/apollo/issues/1294)，该案例中由于中美机房相距甚远，所以需要config db两地部署，如果是同城多机房的话，两个机房的config service可以连同一个config db。
+请参考[Issue 1294](https://github.com/ctripcorp/apollo/issues/1294)，该案例中由于中美机房相距甚远，所以需要config db两地部署，如果是同城多机房的话，两个机房的config
+service可以连同一个config db。
 
 ### 11. apollo是否有支持HEAD请求的页面？阿里云slb配置健康检查只支持HEAD请求
 
@@ -240,6 +280,7 @@ apollo的每个服务都有`/health`页面的，该页面是apollo用来做健�
 从1.1.0版本开始，apollo-portal增加了查看权限的支持，可以支持配置某个环境只允许项目成员查看私有Namespace的配置。
 
 这里的项目成员是指：
+
 1. 项目的管理员
 2. 具备该私有Namespace在该环境下的修改或发布权限
 
@@ -255,8 +296,7 @@ apollo的每个服务都有`/health`页面的，该页面是apollo用来做健�
 2. 修改apollo-configservice的pom.xml，增加`<packaging>war</packaging>`
 3. 按照分布式部署文档配置build.sh，然后打包
 4. 把apollo-configservice的war包放到tomcat下
-    * cp apollo-configservice/target/apollo-configservice-xxx.war ${tomcat-dir}/webapps/ROOT.war
-运行tomcat的startup.sh
+    * cp apollo-configservice/target/apollo-configservice-xxx.war ${tomcat-dir}/webapps/ROOT.war 运行tomcat的startup.sh
 5. 运行tomcat的startup.sh
 
 另外，apollo还有一些调优参数建议在tomcat的server.xml中配置一下，可以参考[application.properties](https://github.com/ctripcorp/apollo/blob/master/apollo-common/src/main/resources/application.properties#L12)
@@ -278,6 +318,7 @@ apollo的每个服务都有`/health`页面的，该页面是apollo用来做健�
 首先为apollo-portal增加-D参数`server.servlet.context-path=/apollo`或系统环境变量`SERVER_SERVLET_CONTEXT_PATH=/apollo`。
 
 然后在nginx/slb上配置转发即可，以nginx为例：
+
 ```
 location /apollo/ {
     proxy_set_header X-Forwarded-Host $host;
@@ -292,6 +333,7 @@ location /apollo/ {
 首先为portal加上`prefix.path=/apollo`配置参数，配置方式很简单，用超级管理员账号登录后，进入`管理员工具 - 系统参数`页面新增或修改`prefix.path`配置项即可。
 
 然后在nginx/slb上配置转发即可，以nginx为例：
+
 ```
 location /apollo/ {
     proxy_set_header X-Forwarded-Host $host;

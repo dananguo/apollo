@@ -1,13 +1,15 @@
->注意：本文档适用对象是Apollo系统的使用者，如果你是公司内Apollo系统的开发者/维护人员，建议先参考[Apollo开发指南](zh/development/apollo-development-guide)。
+> 注意：本文档适用对象是Apollo系统的使用者，如果你是公司内Apollo系统的开发者/维护人员，建议先参考[Apollo开发指南](zh/development/apollo-development-guide)。
 
 # &nbsp;
+
 # 一、准备工作
 
 ## 1.1 环境要求
-    
+
 * .Net: 4.0+
 
 ## 1.2 必选设置
+
 Apollo客户端依赖于`AppId`，`Environment`等环境信息来工作，所以请确保阅读下面的说明并且做正确的配置：
 
 ### 1.2.1 AppId
@@ -39,16 +41,18 @@ env=DEV
 ```
 
 目前，`env`支持以下几个值（大小写不敏感）：
+
 * DEV
-  * Development environment
+    * Development environment
 * FAT
-  * Feature Acceptance Test environment
+    * Feature Acceptance Test environment
 * UAT
-  * User Acceptance Test environment
+    * User Acceptance Test environment
 * PRO
-  * Production environment
+    * Production environment
 
 ### 1.2.3 服务地址
+
 Apollo客户端针对不同的环境会从不同的服务器获取配置，所以请确保在app.config或web.config正确配置了服务器地址(Apollo.{ENV}.Meta)，其中内容形如：
 
 ```xml
@@ -67,6 +71,7 @@ Apollo客户端针对不同的环境会从不同的服务器获取配置，所�
 ```
 
 ### 1.2.4 本地缓存路径
+
 Apollo客户端会把从服务端获取到的配置在本地文件系统缓存一份，用于在遇到服务不可用，或网络不通的时候，依然能从本地恢复配置，不影响应用正常运行。
 
 本地缓存路径位于`C:\opt\data\{appId}\config-cache`，所以请确保`C:\opt\data\`目录存在，且应用有读写权限。
@@ -108,23 +113,27 @@ Apollo支持配置按照集群划分，也就是说对于一个appId和一个环
     * 我们会从默认的集群（`default`）加载配置
 
 # 二、DLL引用
+
 .Net客户端项目地址位于：[https://github.com/ctripcorp/apollo.net](https://github.com/ctripcorp/apollo.net)。
 
 将项目下载到本地，切换到`Release`配置，编译Solution后会在`apollo.net\Apollo\bin\Release`中生成`Framework.Apollo.Client.dll`。
 
 在应用中引用`Framework.Apollo.Client.dll`即可。
 
-如果需要支持.Net Core的Apollo版本，可以参考[dotnet-core](https://github.com/ctripcorp/apollo.net/tree/dotnet-core)以及[nuget仓库](https://www.nuget.org/packages?q=Com.Ctrip.Framework.Apollo)
+如果需要支持.Net
+Core的Apollo版本，可以参考[dotnet-core](https://github.com/ctripcorp/apollo.net/tree/dotnet-core)以及[nuget仓库](https://www.nuget.org/packages?q=Com.Ctrip.Framework.Apollo)
 
 # 三、客户端用法
 
 ## 3.1 获取默认namespace的配置（application）
+
 ```c#
 Config config = ConfigService.GetAppConfig(); //config instance is singleton for each namespace and is never null
 string someKey = "someKeyFromDefaultNamespace";
 string someDefaultValue = "someDefaultValueForTheKey";
 string value = config.GetProperty(someKey, someDefaultValue);
 ```
+
 通过上述的**config.GetProperty**可以获取到someKey对应的实时最新的配置值。
 
 另外，配置值从内存中获取，所以不需要应用自己做缓存。
@@ -134,6 +143,7 @@ string value = config.GetProperty(someKey, someDefaultValue);
 监听配置变化事件只在应用真的关心配置变化，需要在配置变化时得到通知时使用，比如：数据库连接串变化后需要重建连接等。
 
 如果只是希望每次都取到最新的配置的话，只需要按照上面的例子，调用**config.GetProperty**即可。
+
 ```c#
 Config config = ConfigService.GetAppConfig(); //config instance is singleton for each namespace and is never null
 config.ConfigChanged += new ConfigChangeEvent(OnChanged);
@@ -149,6 +159,7 @@ private void OnChanged(object sender, ConfigChangeEventArgs changeEvent)
 ```
 
 ## 3.3 获取公共Namespace的配置
+
 ```c#
 string somePublicNamespace = "CAT";
 Config config = ConfigService.GetConfig(somePublicNamespace); //config instance is singleton for each namespace and is never null
@@ -158,13 +169,16 @@ string value = config.GetProperty(someKey, someDefaultValue);
 ```
 
 ## 3.4 Demo
-apollo.net项目中有一个样例客户端的项目：`ApolloDemo`，具体信息可以参考[Apollo开发指南](zh/development/apollo-development-guide)中的[2.4 .Net样例客户端启动](zh/development/apollo-development-guide?id=_24-net样例客户端启动)部分。
 
->注：Apollo .Net客户端开源版目前默认会把日志直接输出到Console，大家可以自己实现Logging相关功能。
+apollo.net项目中有一个样例客户端的项目：`ApolloDemo`，具体信息可以参考[Apollo开发指南](zh/development/apollo-development-guide)
+中的[2.4 .Net样例客户端启动](zh/development/apollo-development-guide?id=_24-net样例客户端启动)部分。
+
+> 注：Apollo .Net客户端开源版目前默认会把日志直接输出到Console，大家可以自己实现Logging相关功能。
 >
 > 详见[https://github.com/ctripcorp/apollo.net/tree/master/Apollo/Logging/Spi](https://github.com/ctripcorp/apollo.net/tree/master/Apollo/Logging/Spi)
 
 # 四、客户端设计
+
 ![client-architecture](https://github.com/ctripcorp/apollo/raw/master/doc/images/client-architecture.png)
 
 上图简要描述了Apollo客户端的实现原理：
@@ -188,15 +202,19 @@ Apollo客户端还支持本地开发模式，这个主要用于当开发环境�
 可以通过下面的步骤开启Apollo本地开发模式。
 
 ## 5.1 修改环境
+
 修改C:\opt\settings\server.properties文件，设置env为Local：
+
 ```properties
 env=Local
 ```
 
 ## 5.2 准备本地配置文件
+
 在本地开发模式下，Apollo客户端会从本地读取文件，所以我们需要事先准备好配置文件。
 
 ### 5.2.1 本地配置目录
+
 本地配置目录位于：C:\opt\data\\{_appId_}\config-cache。
 
 appId就是应用的appId，如100004458。
@@ -206,6 +224,7 @@ appId就是应用的appId，如100004458。
 **【小技巧】** 推荐的方式是先在普通模式下使用Apollo，这样Apollo会自动创建该目录并在目录下生成配置文件。
 
 ### 5.2.2 本地配置文件
+
 本地配置文件需要按照一定的文件名格式放置于本地配置目录下，文件名格式如下：
 
 **_{appId}+{cluster}+{namespace}.json_**
@@ -213,9 +232,10 @@ appId就是应用的appId，如100004458。
 * appId就是应用自己的appId，如100004458
 * cluster就是应用使用的集群，一般在本地模式下没有做过配置的话，就是default
 * namespace就是应用使用配置namespace，一般是application
-![client-local-cache](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/apollo-net-config-cache.png)
+  ![client-local-cache](https://raw.githubusercontent.com/ctripcorp/apollo/master/doc/images/apollo-net-config-cache.png)
 
 文件内容以json格式存储，比如如果有两个key，一个是request.timeout，另一个是batch，那么文件内容就是如下格式：
+
 ```json
 {
     "request.timeout":"1000",
@@ -224,4 +244,5 @@ appId就是应用的appId，如100004458。
 ```
 
 ## 5.3 修改配置
+
 在本地开发模式下，Apollo不会实时监测文件内容是否有变化，所以如果修改了配置，需要重启应用生效。

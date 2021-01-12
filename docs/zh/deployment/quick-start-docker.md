@@ -1,13 +1,16 @@
 如果您对Docker非常熟悉，可以使用Docker的方式快速部署Apollo，从而快速的了解Apollo。如果您对Docker并不是很了解，请参考[常规方式部署Quick Start](zh/deployment/quick-start)。
 
-另外需要说明的是，不管是Docker方式部署Quick Start还是常规方式部署的，Quick Start只是用来快速入门、了解Apollo。如果部署Apollo在公司中使用，请参考[分布式部署指南](zh/deployment/distributed-deployment-guide)。
+另外需要说明的是，不管是Docker方式部署Quick Start还是常规方式部署的，Quick
+Start只是用来快速入门、了解Apollo。如果部署Apollo在公司中使用，请参考[分布式部署指南](zh/deployment/distributed-deployment-guide)。
 
 > 由于Docker对windows的支持并不是很好，所以不建议您在windows环境下使用Docker方式部署，除非您对windows docker非常了解
 
 ## 一、 准备工作
 
 ### 1.1 安装Docker
+
 具体步骤可以参考[Docker安装指南](https://yeasy.gitbooks.io/docker_practice/content/install/)，通过以下命令测试是否成功安装
+
 ```
 docker -v
 ```
@@ -23,6 +26,7 @@ docker -v
 在docker-quick-start目录下执行`docker-compose up`，第一次执行会触发下载镜像等操作，需要耐心等待一些时间。
 
 搜索所有`apollo-quick-start`开头的日志，看到以下日志说明启动成功：
+
 ```log
 apollo-quick-start    | ==== starting service ====
 apollo-quick-start    | Service logging file is ./service/apollo-service.log
@@ -47,6 +51,7 @@ apollo-quick-start    | Portal started. You can visit http://localhost:8070 now!
 使用相关步骤可以参考[Quick Start - 四、使用Apollo配置中心](zh/deployment/quick-start#四、使用apollo配置中心)
 
 需要注意的是，在Docker环境下需要通过下面的命令运行Demo客户端：
+
 ```bash
 docker exec -i apollo-quick-start /apollo-quick-start/demo.sh client
 ```

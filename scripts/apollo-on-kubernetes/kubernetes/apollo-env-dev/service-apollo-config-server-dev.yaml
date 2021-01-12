@@ -47,7 +47,7 @@ spec:
       targetPort: 8080
       nodePort: 30002
   selector:
-    app: pod-apollo-config-server-dev 
+    app: pod-apollo-config-server-dev
   type: NodePort
   sessionAffinity: ClientIP
 
@@ -92,7 +92,7 @@ spec:
             items:
               - key: application-github.properties
                 path: application-github.properties
-      
+
       containers:
         - image: apollo-config-server:v1.0.0
           securityContext:
@@ -102,27 +102,27 @@ spec:
           ports:
             - protocol: TCP
               containerPort: 8080
-          
+
           volumeMounts:
             - name: volume-configmap-apollo-config-server-dev
               mountPath: /apollo-config-server/config/application-github.properties
               subPath: application-github.properties
-          
+
           env:
             - name: APOLLO_CONFIG_SERVICE_NAME
               value: "service-apollo-config-server-dev.sre"
-          
+
           readinessProbe:
             tcpSocket:
               port: 8080
             initialDelaySeconds: 10
             periodSeconds: 5
-          
+
           livenessProbe:
             tcpSocket:
               port: 8080
             initialDelaySeconds:  120
             periodSeconds: 10
-          
+
       dnsPolicy: ClusterFirst
       restartPolicy: Always

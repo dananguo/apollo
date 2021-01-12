@@ -4,7 +4,8 @@
 
 ## 1. Introduction
 
-The apollo-service and apollo-portal charts create deployments for apollo-configservice, apollo-adminservice and apollo-portal, which utilize the kubernetes native service discovery.
+The apollo-service and apollo-portal charts create deployments for apollo-configservice, apollo-adminservice and
+apollo-portal, which utilize the kubernetes native service discovery.
 
 ## 2. Prerequisites
 
@@ -22,7 +23,8 @@ $ helm search repo apollo
 
 ### 4.1 Install
 
-apollo-configservice and apollo-adminservice should be installed per environment, so it is suggested to indicate environment in the release name, e.g. `apollo-service-dev`
+apollo-configservice and apollo-adminservice should be installed per environment, so it is suggested to indicate
+environment in the release name, e.g. `apollo-service-dev`
 
 ```bash
 $ helm install apollo-service-dev \
@@ -153,6 +155,7 @@ configdb:
     enabled: true
     type: ExternalName
 ```
+
 3. ConfigDB host is a kubernetes service
 
 ```yaml
@@ -303,6 +306,7 @@ portaldb:
     enabled: true
     type: ExternalName
 ```
+
 3. PortalDB host is a kubernetes service
 
 ```yaml

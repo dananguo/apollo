@@ -18,37 +18,37 @@ import javax.validation.Valid;
 @RestController
 public class ClusterController {
 
-  private final ClusterService clusterService;
-  private final UserInfoHolder userInfoHolder;
+    private final ClusterService clusterService;
+    private final UserInfoHolder userInfoHolder;
 
-  public ClusterController(final ClusterService clusterService, final UserInfoHolder userInfoHolder) {
-    this.clusterService = clusterService;
-    this.userInfoHolder = userInfoHolder;
-  }
+    public ClusterController(final ClusterService clusterService, final UserInfoHolder userInfoHolder) {
+        this.clusterService = clusterService;
+        this.userInfoHolder = userInfoHolder;
+    }
 
-  @PreAuthorize(value = "@permissionValidator.hasCreateClusterPermission(#appId)")
-  @PostMapping(value = "apps/{appId}/envs/{env}/clusters")
-  public ClusterDTO createCluster(@PathVariable String appId, @PathVariable String env,
-                                  @Valid @RequestBody ClusterDTO cluster) {
-    String operator = userInfoHolder.getUser().getUserId();
-    cluster.setDataChangeLastModifiedBy(operator);
-    cluster.setDataChangeCreatedBy(operator);
+    @PreAuthorize(value = "@permissionValidator.hasCreateClusterPermission(#appId)")
+    @PostMapping(value = "apps/{appId}/envs/{env}/clusters")
+    public ClusterDTO createCluster(@PathVariable String appId, @PathVariable String env,
+                                    @Valid @RequestBody ClusterDTO cluster) {
+        String operator = userInfoHolder.getUser().getUserId();
+        cluster.setDataChangeLastModifiedBy(operator);
+        cluster.setDataChangeCreatedBy(operator);
 
-    return clusterService.createCluster(Env.valueOf(env), cluster);
-  }
+        return clusterService.createCluster(Env.valueOf(env), cluster);
+    }
 
-  @PreAuthorize(value = "@permissionValidator.isSuperAdmin()")
-  @DeleteMapping(value = "apps/{appId}/envs/{env}/clusters/{clusterName:.+}")
-  public ResponseEntity<Void> deleteCluster(@PathVariable String appId, @PathVariable String env,
-                                            @PathVariable String clusterName){
-    clusterService.deleteCluster(Env.valueOf(env), appId, clusterName);
-    return ResponseEntity.ok().build();
-  }
+    @PreAuthorize(value = "@permissionValidator.isSuperAdmin()")
+    @DeleteMapping(value = "apps/{appId}/envs/{env}/clusters/{clusterName:.+}")
+    public ResponseEntity<Void> deleteCluster(@PathVariable String appId, @PathVariable String env,
+                                              @PathVariable String clusterName) {
+        clusterService.deleteCluster(Env.valueOf(env), appId, clusterName);
+        return ResponseEntity.ok().build();
+    }
 
-  @GetMapping(value = "apps/{appId}/envs/{env}/clusters/{clusterName:.+}")
-  public ClusterDTO loadCluster(@PathVariable("appId") String appId, @PathVariable String env, @PathVariable("clusterName") String clusterName) {
+    @GetMapping(value = "apps/{appId}/envs/{env}/clusters/{clusterName:.+}")
+    public ClusterDTO loadCluster(@PathVariable("appId") String appId, @PathVariable String env, @PathVariable("clusterName") String clusterName) {
 
-    return clusterService.loadCluster(appId, Env.valueOf(env), clusterName);
-  }
+        return clusterService.loadCluster(appId, Env.valueOf(env), clusterName);
+    }
 
 }

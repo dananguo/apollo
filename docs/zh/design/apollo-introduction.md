@@ -1,4 +1,5 @@
 # &nbsp;
+
 # 1、What is Apollo
 
 ## 1.1 背景
@@ -16,7 +17,7 @@ Apollo配置中心应运而生！
 Apollo（阿波罗）是携程框架部门研发的开源配置管理中心，能够集中化管理应用不同环境、不同集群的配置，配置修改后能够实时推送到应用端，并且具备规范的权限、流程治理等特性。
 
 Apollo支持4个维度管理Key-Value格式的配置：
-	
+
 1. application (应用)
 2. environment (环境)
 3. cluster (集群)
@@ -31,64 +32,65 @@ Apollo支持4个维度管理Key-Value格式的配置：
 按照我们的理解，配置有以下几个属性：
 
 * **配置是独立于程序的只读变量**
-	* 配置首先是独立于程序的，同一份程序在不同的配置下会有不同的行为。
-	* 其次，配置对于程序是只读的，程序通过读取配置来改变自己的行为，但是程序不应该去改变配置。
-	* 常见的配置有：DB Connection Str、Thread Pool Size、Buffer Size、Request Timeout、Feature Switch、Server Urls等。
+    * 配置首先是独立于程序的，同一份程序在不同的配置下会有不同的行为。
+    * 其次，配置对于程序是只读的，程序通过读取配置来改变自己的行为，但是程序不应该去改变配置。
+    * 常见的配置有：DB Connection Str、Thread Pool Size、Buffer Size、Request Timeout、Feature Switch、Server Urls等。
 
 * **配置伴随应用的整个生命周期**
-	* 配置贯穿于应用的整个生命周期，应用在启动时通过读取配置来初始化，在运行时根据配置调整行为。
+    * 配置贯穿于应用的整个生命周期，应用在启动时通过读取配置来初始化，在运行时根据配置调整行为。
 
 * **配置可以有多种加载方式**
-	* 配置也有很多种加载方式，常见的有程序内部hard code，配置文件，环境变量，启动参数，基于数据库等
+    * 配置也有很多种加载方式，常见的有程序内部hard code，配置文件，环境变量，启动参数，基于数据库等
 
 * **配置需要治理**
-	* 权限控制
-		* 由于配置能改变程序的行为，不正确的配置甚至能引起灾难，所以对配置的修改必须有比较完善的权限控制
-	* 不同环境、集群配置管理
-		* 同一份程序在不同的环境（开发，测试，生产）、不同的集群（如不同的数据中心）经常需要有不同的配置，所以需要有完善的环境、集群配置管理
-	* 框架类组件配置管理
-		* 还有一类比较特殊的配置 - 框架类组件配置，比如CAT客户端的配置。
-		* 虽然这类框架类组件是由其他团队开发、维护，但是运行时是在业务实际应用内的，所以本质上可以认为框架类组件也是应用的一部分。
-		* 这类组件对应的配置也需要有比较完善的管理方式。
+    * 权限控制
+        * 由于配置能改变程序的行为，不正确的配置甚至能引起灾难，所以对配置的修改必须有比较完善的权限控制
+    * 不同环境、集群配置管理
+        * 同一份程序在不同的环境（开发，测试，生产）、不同的集群（如不同的数据中心）经常需要有不同的配置，所以需要有完善的环境、集群配置管理
+    * 框架类组件配置管理
+        * 还有一类比较特殊的配置 - 框架类组件配置，比如CAT客户端的配置。
+        * 虽然这类框架类组件是由其他团队开发、维护，但是运行时是在业务实际应用内的，所以本质上可以认为框架类组件也是应用的一部分。
+        * 这类组件对应的配置也需要有比较完善的管理方式。
 
 # 2、Why Apollo
 
 正是基于配置的特殊性，所以Apollo从设计之初就立志于成为一个有治理能力的配置发布平台，目前提供了以下的特性：
 
 * **统一管理不同环境、不同集群的配置**
-	* Apollo提供了一个统一界面集中式管理不同环境（environment）、不同集群（cluster）、不同命名空间（namespace）的配置。
-	* 同一份代码部署在不同的集群，可以有不同的配置，比如zookeeper的地址等
-	* 通过命名空间（namespace）可以很方便地支持多个不同应用共享同一份配置，同时还允许应用对共享的配置进行覆盖
+    * Apollo提供了一个统一界面集中式管理不同环境（environment）、不同集群（cluster）、不同命名空间（namespace）的配置。
+    * 同一份代码部署在不同的集群，可以有不同的配置，比如zookeeper的地址等
+    * 通过命名空间（namespace）可以很方便地支持多个不同应用共享同一份配置，同时还允许应用对共享的配置进行覆盖
 
 * **配置修改实时生效（热发布）**
-	* 用户在Apollo修改完配置并发布后，客户端能实时（1秒）接收到最新的配置，并通知到应用程序
+    * 用户在Apollo修改完配置并发布后，客户端能实时（1秒）接收到最新的配置，并通知到应用程序
 
 * **版本发布管理**
-	* 所有的配置发布都有版本概念，从而可以方便地支持配置的回滚
+    * 所有的配置发布都有版本概念，从而可以方便地支持配置的回滚
 
 * **灰度发布**
-	* 支持配置的灰度发布，比如点了发布后，只对部分应用实例生效，等观察一段时间没问题后再推给所有应用实例
+    * 支持配置的灰度发布，比如点了发布后，只对部分应用实例生效，等观察一段时间没问题后再推给所有应用实例
 
 * **权限管理、发布审核、操作审计**
-	* 应用和配置的管理都有完善的权限管理机制，对配置的管理还分为了编辑和发布两个环节，从而减少人为的错误。
-	* 所有的操作都有审计日志，可以方便地追踪问题
+    * 应用和配置的管理都有完善的权限管理机制，对配置的管理还分为了编辑和发布两个环节，从而减少人为的错误。
+    * 所有的操作都有审计日志，可以方便地追踪问题
 
 * **客户端配置信息监控**
-	* 可以在界面上方便地看到配置在被哪些实例使用
+    * 可以在界面上方便地看到配置在被哪些实例使用
 
 * **提供Java和.Net原生客户端**
-	* 提供了Java和.Net的原生客户端，方便应用集成
-	* 支持Spring Placeholder, Annotation和Spring Boot的ConfigurationProperties，方便应用使用（需要Spring 3.1.1+）
-	* 同时提供了Http接口，非Java和.Net应用也可以方便地使用
+    * 提供了Java和.Net的原生客户端，方便应用集成
+    * 支持Spring Placeholder, Annotation和Spring Boot的ConfigurationProperties，方便应用使用（需要Spring 3.1.1+）
+    * 同时提供了Http接口，非Java和.Net应用也可以方便地使用
 
 * **提供开放平台API**
-	* Apollo自身提供了比较完善的统一配置管理界面，支持多环境、多数据中心配置管理、权限、流程治理等特性。不过Apollo出于通用性考虑，不会对配置的修改做过多限制，只要符合基本的格式就能保存，不会针对不同的配置值进行针对性的校验，如数据库用户名、密码，Redis服务地址等
-	* 对于这类应用配置，Apollo支持应用方通过开放平台API在Apollo进行配置的修改和发布，并且具备完善的授权和权限控制
+    *
+  Apollo自身提供了比较完善的统一配置管理界面，支持多环境、多数据中心配置管理、权限、流程治理等特性。不过Apollo出于通用性考虑，不会对配置的修改做过多限制，只要符合基本的格式就能保存，不会针对不同的配置值进行针对性的校验，如数据库用户名、密码，Redis服务地址等
+    * 对于这类应用配置，Apollo支持应用方通过开放平台API在Apollo进行配置的修改和发布，并且具备完善的授权和权限控制
 
 * **部署简单**
-	* 配置中心作为基础服务，可用性要求非常高，这就要求Apollo对外部依赖尽可能地少
-	* 目前唯一的外部依赖是MySQL，所以部署非常简单，只要安装好Java和MySQL就可以让Apollo跑起来
-	* Apollo还提供了打包脚本，一键就可以生成所有需要的安装包，并且支持自定义运行时参数
+    * 配置中心作为基础服务，可用性要求非常高，这就要求Apollo对外部依赖尽可能地少
+    * 目前唯一的外部依赖是MySQL，所以部署非常简单，只要安装好Java和MySQL就可以让Apollo跑起来
+    * Apollo还提供了打包脚本，一键就可以生成所有需要的安装包，并且支持自定义运行时参数
 
 # 3、Apollo at a glance
 
@@ -134,12 +136,13 @@ Apollo支持4个维度管理Key-Value格式的配置：
 
 ## 3.5 客户端获取配置（Java API样例）
 
-配置发布后，就能在客户端获取到了，以Java为例，获取配置的示例代码如下。Apollo客户端还支持和Spring整合，更多客户端使用说明请参见[Java客户端使用指南](zh/usage/java-sdk-user-guide)和[.Net客户端使用指南](zh/usage/dotnet-sdk-user-guide)。
+配置发布后，就能在客户端获取到了，以Java为例，获取配置的示例代码如下。Apollo客户端还支持和Spring整合，更多客户端使用说明请参见[Java客户端使用指南](zh/usage/java-sdk-user-guide)
+和[.Net客户端使用指南](zh/usage/dotnet-sdk-user-guide)。
 
 ```java
-Config config = ConfigService.getAppConfig();
-Integer defaultRequestTimeout = 200;
-Integer requestTimeout = config.getIntProperty("requestTimeout", defaultRequestTimeout);
+Config config=ConfigService.getAppConfig();
+        Integer defaultRequestTimeout=200;
+        Integer requestTimeout=config.getIntProperty("requestTimeout",defaultRequestTimeout);
 ```
 
 ## 3.6 客户端监听配置变化
@@ -149,19 +152,19 @@ Integer requestTimeout = config.getIntProperty("requestTimeout", defaultRequestT
 不过在某些场景下，应用还需要在配置变化时获得通知，比如数据库连接的切换等，所以Apollo还提供了监听配置变化的功能，Java示例如下：
 
 ```java
-Config config = ConfigService.getAppConfig();
-config.addChangeListener(new ConfigChangeListener() {
-  @Override
-  public void onChange(ConfigChangeEvent changeEvent) {
-    for (String key : changeEvent.changedKeys()) {
-      ConfigChange change = changeEvent.getChange(key);
-      System.out.println(String.format(
+Config config=ConfigService.getAppConfig();
+        config.addChangeListener(new ConfigChangeListener(){
+@Override
+public void onChange(ConfigChangeEvent changeEvent){
+        for(String key:changeEvent.changedKeys()){
+        ConfigChange change=changeEvent.getChange(key);
+        System.out.println(String.format(
         "Found change - key: %s, oldValue: %s, newValue: %s, changeType: %s",
-        change.getPropertyName(), change.getOldValue(),
-        change.getNewValue(), change.getChangeType()));
-     }
-  }
-});
+        change.getPropertyName(),change.getOldValue(),
+        change.getNewValue(),change.getChangeType()));
+        }
+        }
+        });
 ```
 
 ## 3.7 Spring集成样例
@@ -169,12 +172,15 @@ config.addChangeListener(new ConfigChangeListener() {
 Apollo和Spring也可以很方便地集成，只需要标注`@EnableApolloConfig`后就可以通过`@Value`获取配置信息：
 
 ```java
+
 @Configuration
 @EnableApolloConfig
-public class AppConfig {}
+public class AppConfig {
+}
 ```
 
 ```java
+
 @Component
 public class SomeBean {
     //timeout的值会自动更新
@@ -194,25 +200,28 @@ public class SomeBean {
 在介绍高级特性前，我们有必要先来了解一下Apollo中的几个核心概念：
 
 1. **application (应用)**
-	* 这个很好理解，就是实际使用配置的应用，Apollo客户端在运行时需要知道当前应用是谁，从而可以去获取对应的配置
-	* 每个应用都需要有唯一的身份标识 -- appId，我们认为应用身份是跟着代码走的，所以需要在代码中配置，具体信息请参见[Java客户端使用指南](zh/usage/java-sdk-user-guide)。
+    * 这个很好理解，就是实际使用配置的应用，Apollo客户端在运行时需要知道当前应用是谁，从而可以去获取对应的配置
+    * 每个应用都需要有唯一的身份标识 -- appId，我们认为应用身份是跟着代码走的，所以需要在代码中配置，具体信息请参见[Java客户端使用指南](zh/usage/java-sdk-user-guide)。
 
 2. **environment (环境)**
-	* 配置对应的环境，Apollo客户端在运行时需要知道当前应用处于哪个环境，从而可以去获取应用的配置
-	* 我们认为环境和代码无关，同一份代码部署在不同的环境就应该能够获取到不同环境的配置
-	* 所以环境默认是通过读取机器上的配置（server.properties中的env属性）指定的，不过为了开发方便，我们也支持运行时通过System Property等指定，具体信息请参见[Java客户端使用指南](zh/usage/java-sdk-user-guide)。
+    * 配置对应的环境，Apollo客户端在运行时需要知道当前应用处于哪个环境，从而可以去获取应用的配置
+    * 我们认为环境和代码无关，同一份代码部署在不同的环境就应该能够获取到不同环境的配置
+    * 所以环境默认是通过读取机器上的配置（server.properties中的env属性）指定的，不过为了开发方便，我们也支持运行时通过System
+      Property等指定，具体信息请参见[Java客户端使用指南](zh/usage/java-sdk-user-guide)。
 
 3. **cluster (集群)**
-	* 一个应用下不同实例的分组，比如典型的可以按照数据中心分，把上海机房的应用实例分为一个集群，把北京机房的应用实例分为另一个集群。
-	* 对不同的cluster，同一个配置可以有不一样的值，如zookeeper地址。
-	* 集群默认是通过读取机器上的配置（server.properties中的idc属性）指定的，不过也支持运行时通过System Property指定，具体信息请参见[Java客户端使用指南](zh/usage/java-sdk-user-guide)。
+    * 一个应用下不同实例的分组，比如典型的可以按照数据中心分，把上海机房的应用实例分为一个集群，把北京机房的应用实例分为另一个集群。
+    * 对不同的cluster，同一个配置可以有不一样的值，如zookeeper地址。
+    * 集群默认是通过读取机器上的配置（server.properties中的idc属性）指定的，不过也支持运行时通过System
+      Property指定，具体信息请参见[Java客户端使用指南](zh/usage/java-sdk-user-guide)。
 
 4. **namespace (命名空间)**
-	* 一个应用下不同配置的分组，可以简单地把namespace类比为文件，不同类型的配置存放在不同的文件中，如数据库配置文件，RPC配置文件，应用自身的配置文件等
-	* 应用可以直接读取到公共组件的配置namespace，如DAL，RPC等
-	* 应用也可以通过继承公共组件的配置namespace来对公共组件的配置做调整，如DAL的初始数据库连接数
+    * 一个应用下不同配置的分组，可以简单地把namespace类比为文件，不同类型的配置存放在不同的文件中，如数据库配置文件，RPC配置文件，应用自身的配置文件等
+    * 应用可以直接读取到公共组件的配置namespace，如DAL，RPC等
+    * 应用也可以通过继承公共组件的配置namespace来对公共组件的配置做调整，如DAL的初始数据库连接数
 
 ## 4.2 自定义Cluster
+
 > 【本节内容仅对应用需要对不同集群应用不同配置才需要，如没有相关需求，可以跳过本节】
 
 比如我们有应用在A数据中心和B数据中心都有部署，那么如果希望两个数据中心的配置不一样的话，我们可以通过新建cluster来解决。
@@ -245,6 +254,7 @@ Apollo会默认使用应用实例所在的数据中心作为cluster，所以如�
 * 这里注意`apollo.cluster`为全小写
 
 ## 4.3 自定义Namespace
+
 > 【本节仅对公共组件配置或需要多个应用共享配置才需要，如没有相关需求，可以跳过本节】
 
 如果应用有公共组件（如hermes-producer，cat-client等）供其它应用使用，就需要通过自定义namespace来实现公共组件的配置。
@@ -281,42 +291,46 @@ Namespace创建完，需要选择在哪些环境和集群下使用
 
 ### 4.3.5 客户端获取Namespace配置
 
-对自定义namespace的配置获取，稍有不同，需要程序传入namespace的名字。Apollo客户端还支持和Spring整合，更多客户端使用说明请参见[Java客户端使用指南](zh/usage/java-sdk-user-guide)和[.Net客户端使用指南](zh/usage/dotnet-sdk-user-guide)。
+对自定义namespace的配置获取，稍有不同，需要程序传入namespace的名字。Apollo客户端还支持和Spring整合，更多客户端使用说明请参见[Java客户端使用指南](zh/usage/java-sdk-user-guide)
+和[.Net客户端使用指南](zh/usage/dotnet-sdk-user-guide)。
 
 ```java
-Config config = ConfigService.getConfig("FX.Hermes.Producer");
-Integer defaultSenderBatchSize = 200;
-Integer senderBatchSize = config.getIntProperty("sender.batchsize", defaultSenderBatchSize);
+Config config=ConfigService.getConfig("FX.Hermes.Producer");
+        Integer defaultSenderBatchSize=200;
+        Integer senderBatchSize=config.getIntProperty("sender.batchsize",defaultSenderBatchSize);
 ```
 
 ### 4.3.6 客户端监听Namespace配置变化
 
 ```java
-Config config = ConfigService.getConfig("FX.Hermes.Producer");
-config.addChangeListener(new ConfigChangeListener() {
-  @Override
-  public void onChange(ConfigChangeEvent changeEvent) {
-    System.out.println("Changes for namespace " + changeEvent.getNamespace());
-    for (String key : changeEvent.changedKeys()) {
-      ConfigChange change = changeEvent.getChange(key);
-      System.out.println(String.format(
+Config config=ConfigService.getConfig("FX.Hermes.Producer");
+        config.addChangeListener(new ConfigChangeListener(){
+@Override
+public void onChange(ConfigChangeEvent changeEvent){
+        System.out.println("Changes for namespace "+changeEvent.getNamespace());
+        for(String key:changeEvent.changedKeys()){
+        ConfigChange change=changeEvent.getChange(key);
+        System.out.println(String.format(
         "Found change - key: %s, oldValue: %s, newValue: %s, changeType: %s",
-        change.getPropertyName(), change.getOldValue(),
-        change.getNewValue(), change.getChangeType()));
-     }
-  }
-});
+        change.getPropertyName(),change.getOldValue(),
+        change.getNewValue(),change.getChangeType()));
+        }
+        }
+        });
 ```
 
 ### 4.3.7 Spring集成样例
 
 ```java
+
 @Configuration
 @EnableApolloConfig("FX.Hermes.Producer")
-public class AppConfig {}
+public class AppConfig {
+}
 ```
 
 ```java
+
 @Component
 public class SomeBean {
     //timeout的值会自动更新
@@ -326,6 +340,7 @@ public class SomeBean {
 ```
 
 ## 4.4 配置获取规则
+
 > 【本节仅当应用自定义了集群或namespace才需要，如无相关需求，可以跳过本节】
 
 在有了cluster概念后，配置的规则就显得重要了。
@@ -341,7 +356,7 @@ public class SomeBean {
 当应用使用下面的语句获取配置时，我们称之为获取应用自身的配置，也就是应用自身的application namespace的配置。
 
 ```java
-Config config = ConfigService.getAppConfig();
+Config config=ConfigService.getAppConfig();
 ```
 
 对这种情况的配置获取规则，简而言之如下：
@@ -363,7 +378,7 @@ Config config = ConfigService.getAppConfig();
 以`FX.Hermes.Producer`为例，hermes producer是hermes发布的公共组件。当使用下面的语句获取配置时，我们称之为获取公共组件的配置。
 
 ```java
-Config config = ConfigService.getConfig("FX.Hermes.Producer");
+Config config=ConfigService.getConfig("FX.Hermes.Producer");
 ```
 
 对这种情况的配置获取规则，简而言之如下：
@@ -397,13 +412,13 @@ Config config = ConfigService.getConfig("FX.Hermes.Producer");
 为什么我们采用Eureka作为服务注册中心，而不是使用传统的zk、etcd呢？我大致总结了一下，有以下几方面的原因：
 
 * 它提供了完整的Service Registry和Service Discovery实现
-	* 首先是提供了完整的实现，并且也经受住了Netflix自己的生产环境考验，相对使用起来会比较省心。
+    * 首先是提供了完整的实现，并且也经受住了Netflix自己的生产环境考验，相对使用起来会比较省心。
 * 和Spring Cloud无缝集成
-	* 我们的项目本身就使用了Spring Cloud和Spring Boot，同时Spring Cloud还有一套非常完善的开源代码来整合Eureka，所以使用起来非常方便。
-	* 另外，Eureka还支持在我们应用自身的容器中启动，也就是说我们的应用启动完之后，既充当了Eureka的角色，同时也是服务的提供者。这样就极大的提高了服务的可用性。
-	* **这一点是我们选择Eureka而不是zk、etcd等的主要原因，为了提高配置中心的可用性和降低部署复杂度，我们需要尽可能地减少外部依赖。**
+    * 我们的项目本身就使用了Spring Cloud和Spring Boot，同时Spring Cloud还有一套非常完善的开源代码来整合Eureka，所以使用起来非常方便。
+    * 另外，Eureka还支持在我们应用自身的容器中启动，也就是说我们的应用启动完之后，既充当了Eureka的角色，同时也是服务的提供者。这样就极大的提高了服务的可用性。
+    * **这一点是我们选择Eureka而不是zk、etcd等的主要原因，为了提高配置中心的可用性和降低部署复杂度，我们需要尽可能地减少外部依赖。**
 * Open Source
-	* 最后一点是开源，由于代码是开源的，所以非常便于我们了解它的实现原理和排查问题。
+    * 最后一点是开源，由于代码是开源的，所以非常便于我们了解它的实现原理和排查问题。
 
 ## 4.6 客户端设计
 

@@ -3,6 +3,7 @@
 ## 一、构建镜像
 
 ### 1.1 获取 apollo 压缩包
+
 从 https://github.com/ctripcorp/apollo/releases 下载预先打好的 java 包 <br/>
 例如你下载的是: <br/>
 apollo-portal-1.0.0-github.zip <br/>
@@ -10,14 +11,16 @@ apollo-adminservice-1.0.0-github.zip <br/>
 apollo-configservice-1.0.0-github.zip <br/>
 
 ### 1.2 解压压缩包, 获取程序 jar 包
+
 - 解压 apollo-portal-1.0.0-github.zip <br/>
-获取 apollo-portal-1.0.0.jar, 重命名为 apollo-portal.jar, 放到 scripts/apollo-on-kubernetes/apollo-portal-server
+  获取 apollo-portal-1.0.0.jar, 重命名为 apollo-portal.jar, 放到 scripts/apollo-on-kubernetes/apollo-portal-server
 - 解压 apollo-adminservice-1.0.0-github.zip <br/>
-获取 apollo-adminservice-1.0.0.jar, 重命名为 apollo-adminservice.jar, 放到 scripts/apollo-on-kubernetes/apollo-admin-server
+  获取 apollo-adminservice-1.0.0.jar, 重命名为 apollo-adminservice.jar, 放到 scripts/apollo-on-kubernetes/apollo-admin-server
 - 解压 apollo-configservice-1.0.0-github.zip <br/>
-获取 apollo-configservice-1.0.0.jar, 重命名为 apollo-configservice.jar, 放到 scripts/apollo-on-kubernetes/apollo-config-server
+  获取 apollo-configservice-1.0.0.jar, 重命名为 apollo-configservice.jar, 放到 scripts/apollo-on-kubernetes/apollo-config-server
 
 ### 1.3 build image
+
 需要分别为alpine-bash-3.8-image，apollo-config-server，apollo-admin-server和apollo-portal-server构建镜像。
 
 以 build apollo-config-server image 为例, 其他类似
@@ -49,21 +52,25 @@ push image <br/>
 ## 二、Deploy apollo on kubernetes
 
 ### 2.1 部署 MySQL 服务
+
 你可以选用 MySQL-Galera-WSrep 来提高你的 MySQL 服务的可用性 <br/>
 MySQL 部署步骤略
 
 ### 2.1 导入 MySQL DB 文件
+
 由于上面部署了分布式的 MySQL, 所有 config-server、admin-server、portal-server 使用同一个 MySQL 服务的不同数据库
 
 示例假设你的 apollo 开启了 4 个环境, 即 dev、test-alpha、test-beta、prod, 在你的 MySQL 中导入 scripts/apollo-on-kubernetes/db 下的文件即可
 
-如果有需要, 你可以更改 eureka.service.url 的地址, 格式为 http://config-server-pod-name-index.meta-server-service-name:8080/eureka/ , 例如 http://statefulset-apollo-config-server-dev-0.service-apollo-meta-server-dev:8080/eureka/
+如果有需要, 你可以更改 eureka.service.url 的地址, 格式为 http://config-server-pod-name-index.meta-server-service-name:8080/eureka/ ,
+例如 http://statefulset-apollo-config-server-dev-0.service-apollo-meta-server-dev:8080/eureka/
 
 ### 2.2 Deploy apollo on kubernetes
 
 示例假设你有 4 台 kubernetes node 来部署 apollo, apollo 开启了 4 个环境, 即 dev、test-alpha、test-beta、prod
 
-按照 scripts/apollo-on-kubernetes/kubernetes/kubectl-apply.sh 文件的内容部署 apollo 即可，注意需要按照实际情况修改对应配置文件中的数据库连接信息、eureka.service.url、replicas、nodeSelector、镜像信息等。
+按照 scripts/apollo-on-kubernetes/kubernetes/kubectl-apply.sh 文件的内容部署 apollo
+即可，注意需要按照实际情况修改对应配置文件中的数据库连接信息、eureka.service.url、replicas、nodeSelector、镜像信息等。
 
 ```bash
 scripts/apollo-on-kubernetes/kubernetes$ cat kubectl-apply.sh
@@ -130,42 +137,49 @@ statefulset-apollo-config-server-test-beta-2                1/1       Running   
 ### 2.4 访问 apollo service
 
 - server 端(即 portal) <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;kubernetes-master-ip:30001
+  &nbsp;&nbsp;&nbsp;&nbsp;kubernetes-master-ip:30001
 
 - client 端, 在 client 端无需再实现负载均衡 <br/>
-Dev<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;kubernetes-master-ip:30002 <br/>
-Test-Alpha <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;kubernetes-master-ip:30003 <br/>
-Test-Beta <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;kubernetes-master-ip:30004 <br/>
-Prod <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;kubernetes-master-ip:30005 <br/>
+  Dev<br/>
+  &nbsp;&nbsp;&nbsp;&nbsp;kubernetes-master-ip:30002 <br/>
+  Test-Alpha <br/>
+  &nbsp;&nbsp;&nbsp;&nbsp;kubernetes-master-ip:30003 <br/>
+  Test-Beta <br/>
+  &nbsp;&nbsp;&nbsp;&nbsp;kubernetes-master-ip:30004 <br/>
+  Prod <br/>
+  &nbsp;&nbsp;&nbsp;&nbsp;kubernetes-master-ip:30005 <br/>
 
 # FAQ
 
 ## 关于修改的 Dockerfile
-添加 ENV 和 entrypoint.sh, 启动 server 需要的配置, 在 kubernetes yaml 文件中可以通过 configmap 传入、也可以通过 ENV 传入
-关于 Dockerfile、entrypoint.sh 具体内容, 你可以查看文件里的内容
+
+添加 ENV 和 entrypoint.sh, 启动 server 需要的配置, 在 kubernetes yaml 文件中可以通过 configmap 传入、也可以通过 ENV 传入 关于 Dockerfile、entrypoint.sh
+具体内容, 你可以查看文件里的内容
 
 ## 关于 kubernetes yaml 文件
+
 具体内容请查看 `scripts/apollo-on-kubernetes/kubernetes/service-apollo-portal-server.yaml` 注释 <br/>
 其他类似。
 
 ## 关于 eureka.service.url
+
 使用 meta-server(即 config-server) 的 pod name, config-server 务必使用 statefulset。
 格式为：`http://<config server pod名>.<meta server 服务名>:<meta server端口号>/eureka/`。
 
 以 apollo-env-dev 为例:
+
 ```bash
 ('eureka.service.url', 'default', 'http://statefulset-apollo-config-server-dev-0.service-apollo-meta-server-dev:8080/eureka/,http://statefulset-apollo-config-server-dev-1.service-apollo-meta-server-dev:8080/eureka/,http://statefulset-apollo-config-server-dev-2.service-apollo-meta-server-dev:8080/eureka/', 'Eureka服务Url，多个service以英文逗号分隔')
 ```
+
 你可以精简 config-server pod 的 name, 示例的长名字是为了更好的阅读与理解。
 
 ### 方式一：通过Spring Boot文件 application-github.properties配置（推荐）
+
 推荐此方式配置 `eureka.service.url`，因为可以通过ConfigMap的方式传入容器，无需再修改数据库的字段。
 
 Admin Server的配置：
+
 ```yaml
 ---
 # configmap for apollo-admin-server-dev
@@ -184,6 +198,7 @@ data:
 ```
 
 Config Server的配置：
+
 ```yaml
 ---
 # configmap for apollo-config-server-dev
@@ -202,4 +217,5 @@ data:
 ```
 
 ### 方式二：修改数据表 ApolloConfigDB.ServerConfig
+
 修改数据库表 ApolloConfigDB.ServerConfig的 eureka.service.url。
